@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { Category, Product } = require('../../models');
+const { update } = require('../../models/Product');
 
 // The `/api/categories` endpoint
 
@@ -45,7 +46,25 @@ router.post('/', (req, res) => {
 });
 
 router.put('/:id', (req, res) => {
-  // update a category by its `id` value
+  // update a category by its `id` value  
+  try {
+    Category.update(
+      {
+        id: req.body.id,
+        category_name: req.body.category_name
+      },
+      {
+        where: {
+          id: req.params.id,
+        }
+      }
+    )
+    .then((updatedCategory) => {
+      res.status(200).json(updatedCategory)      
+    })
+  } catch (err) {
+    res.status(500).json('Incorrect format used')
+  } 
 });
 
 router.delete('/:id', (req, res) => {
