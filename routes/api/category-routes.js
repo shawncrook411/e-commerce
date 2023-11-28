@@ -30,6 +30,18 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', (req, res) => {
   // create a new category
+  if (req.body.id && req.body.category_name) {
+    Category.create({
+      id: req.body.id,
+      category_name: req.body.category_name
+    })
+      .then((newCategory) => {
+      res.json(newCategory).status(200)
+    })
+  }
+  else {
+    res.status(500).json('ID and Category name required')
+  }
 });
 
 router.put('/:id', (req, res) => {
